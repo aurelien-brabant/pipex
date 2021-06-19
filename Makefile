@@ -7,8 +7,9 @@ RM				:= rm -rf
 
 TARGET			:= pipex
 
-LIB				:= $(addprefix lib/, ft_strdup.c ft_strtok.c ft_strlcpy.c ft_strlen.c ft_strncmp.c)
-SRC				:= $(addprefix src/, main.c paths.c) $(LIB)
+LIB				:= $(addprefix lib/, ft_strdup.c ft_strtok.c ft_strlcpy.c	\
+					ft_strlen.c ft_strncmp.c argv.c ft_memset.c ft_calloc.c ft_memcpy.c)
+SRC				:= $(addprefix src/, main.c paths.c cmd.c pipeline.c stat.c) $(LIB)
 OBJ				:= $(SRC:%.c=%.o)
 
 all: $(TARGET)
