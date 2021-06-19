@@ -1,0 +1,93 @@
+[
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-Iinclude",
+            "-g",
+            "-o",
+            "lib/ft_strtok.o",
+            "lib/ft_strtok.c"
+        ],
+        "directory": "/home/abrabant/Prog/42/pipex",
+        "file": "lib/ft_strtok.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-Iinclude",
+            "-g",
+            "-o",
+            "lib/ft_strdup.o",
+            "lib/ft_strdup.c"
+        ],
+        "directory": "/home/abrabant/Prog/42/pipex",
+        "file": "lib/ft_strdup.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-Iinclude",
+            "-g",
+            "-o",
+            "src/main.o",
+            "src/main.c"
+        ],
+        "directory": "/home/abrabant/Prog/42/pipex",
+        "file": "src/main.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-Iinclude",
+            "-g",
+            "-o",
+            "lib/ft_strlen.o",
+            "lib/ft_strlen.c"
+        ],
+        "directory": "/home/abrabant/Prog/42/pipex",
+        "file": "lib/ft_strlen.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-Iinclude",
+            "-g",
+            "-o",
+            "src/paths.o",
+            "src/paths.c"
+        ],
+        "directory": "/home/abrabant/Prog/42/pipex",
+        "file": "src/paths.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-Iinclude",
+            "-g",
+            "-o",
+            "lib/ft_strncmp.o",
+            "lib/ft_strncmp.c"
+        ],
+        "directory": "/home/abrabant/Prog/42/pipex",
+        "file": "lib/ft_strncmp.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-Iinclude",
+            "-g",
+            "-o",
+            "lib/ft_strlcpy.o",
+            "lib/ft_strlcpy.c"
+        ],
+        "directory": "/home/abrabant/Prog/42/pipex",
+        "file": "lib/ft_strlcpy.c"
+    }
+]
