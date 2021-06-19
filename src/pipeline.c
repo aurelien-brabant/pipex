@@ -26,6 +26,8 @@ t_pipeline	*pipeline_new(size_t cap)
 	if (pipeline->cmds == NULL)
 		return (NULL);
 	pipeline->cap = cap;
+	pipeline->redir_in_fd = -1;
+	pipeline->redir_out_fd = -1;
 	return (pipeline);
 }
 

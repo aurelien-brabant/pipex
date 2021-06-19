@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <fcntl.h>
 
 #include "pipex.h"
 #include "lib.h"
@@ -25,7 +26,7 @@ char	*get_cmd_path(const char *cmd, const char *path)
 	return (cmd_path);
 }
 
-void	execute_command(t_argv *cmd, int *pipefd, int index, int length)
+void	execute_command(t_pipeline *pipeline, int *pipefd, int index, int length)
 {
 	t_argv	*paths;
 	char	*cmd_path;
@@ -37,17 +38,21 @@ void	execute_command(t_argv *cmd, int *pipefd, int index, int length)
 	pipe(pipefd);
 	while (i < paths->length)
 	{
-		cmd_path = get_cmd_path(cmd->args[0], paths->args[i]);
+		cmd_path = get_cmd_path(pipeline->cmds[index]->args[0], paths->args[i]);
 		if (access(cmd_path, X_OK) == 0)
 		{
 			pid = fork();
 			if (pid == 0)
 			{
-				if (index != 0)
+				if (index == 0)
+					dup2(pipeline->redir_in_fd, STDIN_FILENO);
+				else
 					dup2(pipefd[-2], STDIN_FILENO);
-				if (index != length - 1)
+				if (index == length - 1)
+					dup2(pipeline->redir_out_fd, STDOUT_FILENO);
+				else
 					dup2(pipefd[1], STDOUT_FILENO);
-				execve(cmd_path, cmd->args, stat_get()->envp);
+				execve(cmd_path, pipeline->cmds[index]->args, stat_get()->envp);
 			}
 			close(pipefd[1]);
 			free(cmd_path);
@@ -69,7 +74,7 @@ void	execute_pipeline(t_pipeline *pipeline)
 	i = 0;
 	while (i < pipeline->length)
 	{
-		execute_command(pipeline->cmds[i], pipefd + (i * 2), i, pipeline->length);
+		execute_command(pipeline, pipefd + (i * 2), i, pipeline->length);
 		++i;
 	}
 }
@@ -79,12 +84,23 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_argv		*paths;
 	t_pipeline	*pipeline;
+	size_t		i;
 
-	pipeline = pipeline_new(1);
-	while (*(++argv) != NULL)
-		pipeline_append(pipeline, command_parse(*argv));
+	if (argc < 5)
+		return (1);
+	pipeline = pipeline_new(10);
+	pipeline->redir_in_fd = open(argv[1], O_RDONLY);
+	if (pipeline->redir_in_fd == -1)
+		perror("pipex: input file");
+	i = 2;
+	while (i < argc - 1)
+		pipeline_append(pipeline, command_parse(argv[i++]));
+	pipeline->redir_out_fd = open(argv[i], O_CREAT | O_TRUNC | O_WRONLY, 0644);
+	if (pipeline->redir_out_fd == -1)
+		perror("pipex: output file");
+	if (pipeline->redir_in_fd == -1 || pipeline->redir_out_fd == -1)
+		return (2);
 	stat_get()->paths = get_paths(envp);
 	stat_get()->envp = envp;
 	execute_pipeline(pipeline);
-	//exec_cmd(command_parse(argv[2]), paths, env, pipefd);
 }

@@ -14,6 +14,8 @@ typedef struct	s_pipeline
 	size_t	cap;
 	size_t	length;
 	t_argv	**cmds;
+	int		redir_in_fd;
+	int		redir_out_fd;
 }	t_pipeline;
 
 t_pipeline	*pipeline_new(size_t cap);
