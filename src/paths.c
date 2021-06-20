@@ -1,5 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
+
+#include "libft/cstring.h"
+#include "libft/io.h"
 
 #include "pipex.h"
 
@@ -40,16 +44,17 @@ t_argv	*get_paths(char **env)
 	char	*path_value;
 	char	*token;
 
-	paths = argv_new(10);
+	paths = ft_gc_add(stat_get()->gc, assert_ptr(argv_new(10)), &argv_destroy);
 	path_value = NULL;
 	while (*env)
 	{
 		if (ft_strncmp(*env, "PATH=", 5) == 0)
-			path_value = ft_strdup(*env + 5);
+			path_value = *env + 5;
 		++env;
 	}
 	if (path_value == NULL)
-		printf("PATH is not set!\n");
-	populate_paths(paths, path_value);
+		ft_dprintf(STDERR_FILENO, "PATH is not set!\n");
+	else
+		populate_paths(paths, path_value);
 	return (paths);
 }

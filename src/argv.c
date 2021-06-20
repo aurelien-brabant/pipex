@@ -1,6 +1,9 @@
 #include <stdlib.h>
 
-#include "lib.h"
+#include "libft/core.h"
+#include "libft/cstring.h"
+
+#include "pipex.h"
 
 static void	argv_resize(t_argv *argv)
 {
@@ -49,16 +52,8 @@ void	argv_remove(t_argv *argv, size_t index)
 	argv->args[i] = NULL;
 }
 
-void	argv_destroy(t_argv *argv, void (*fn)(char *arg))
+void	argv_destroy(t_argv *argv)
 {
-	size_t	i;
-
-	i = 0;
-	if (fn != NULL)
-	{
-		while (argv->args[i] != NULL)
-			fn(argv->args[i++]);
-	}
 	free(argv->args);
 	free(argv);
 }

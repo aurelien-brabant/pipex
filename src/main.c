@@ -6,9 +6,12 @@
 #include <string.h>
 #include <sys/errno.h>
 
-#include "pipex.h"
-#include "lib.h"
+#include "libft/gc.h"
+#include "libft/vector.h"
 
+#include "pipex.h"
+
+/*
 void	execute_command(t_pipeline *pipeline, int *pipefd, int index, int length)
 {
 	t_argv	*paths;
@@ -35,53 +38,54 @@ void	execute_command(t_pipeline *pipeline, int *pipefd, int index, int length)
 	}
 	dprintf(STDERR_FILENO, "pipex: %s: command not found\n", cmd);
 }
+*/
 
-void	execute_pipeline(t_pipeline *pipeline)
+void	execute_normal(t_argv *cmd, int *pipefd, int index, int length)
 {
-	int		*pipefd;
-	int		*cur_pipefd;
-	size_t	i;
+	int	pid;
+	int	fd[2];
 
-	pipefd = malloc(sizeof (int) * pipeline->length * 2);
-	if (pipefd == NULL)
-		return ;
-	i = 0;
-	while (i < pipeline->length)
+	fd[0] = open(stat_get()->in_arg, O_RDONLY);
+	fd[1] = open(stat_get()->out_arg, O_WRONLY | O_CREAT | O_TRUNC, 0664);
+	pid = fork();
+	if (pid == 0)
 	{
-		cur_pipefd = pipefd + (i * 2);
-		pipe(cur_pipefd);
-		execute_command(pipeline, cur_pipefd, i, pipeline->length);
-		close(cur_pipefd[1]);
+		if (index == 0)
+		execve(cmd->args[0], cmd->args, stat_get()->envp);
+	}
+	waitpid(pid, NULL, 0);
+}
+
+void	execute_pipeline(t_vector pipeline, int *pipefd)
+{
+	size_t	i;
+	t_argv	*cmd;
+
+	i = 0;
+	while (i < ft_vector_length(pipeline))
+	{
+		cmd = ft_vector_get(pipeline, i);
+		if (access(cmd->args[0], X_OK) == 0)
+			execute(cmd, pipefd, i, ft_vector_length(pipeline));
 		++i;
 	}
 }
 
-
-int	main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char *envp[])
 {
-	t_argv		*paths;
-	t_pipeline	*pipeline;
-	size_t		i;
+	t_gc		gc;
+	t_vector	pipeline;
+	int			*pipefd;
 
-	if (argc < 5)
+	gc = ft_gc_new();
+	if (gc == NULL)
 		return (1);
-	i = 1;
-	pipeline = pipeline_new(10);
-	if (strcmp(argv[i], "here_doc") == 0)
-	{
-		if (argc < 6)
-		{
-			dprintf(STDERR_FILENO, "Missing outfile for here_doc mode\n");
-			return (3);
-		}
-		stat_get()->mode = MODE_HERE_DOC;
-		++i;
-	}
-	stat_get()->filein = argv[i++];
-	while (i < argc - 1)
-		pipeline_append(pipeline, command_parse(argv[i++]));
-	stat_get()->fileout = argv[i];
-	stat_get()->paths = get_paths(envp);
+	stat_get()->gc = gc;
 	stat_get()->envp = envp;
-	execute_pipeline(pipeline);
+	pipeline = parsecl(argc, argv);
+	stat_get()->paths = get_paths(envp);
+	pipefd = ft_gc_add(stat_get()->gc, assert_ptr(
+				malloc(sizeof (int) * ft_vector_length(pipeline) * 2)), &free);
+	execute_pipeline(pipeline, pipefd);
+	return (0);
 }

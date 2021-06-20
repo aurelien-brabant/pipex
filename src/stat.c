@@ -6,8 +6,8 @@ t_stat	*stat_get(void)
 		.envp = NULL,
 		.paths = NULL,
 		.mode = MODE_NORMAL,
-		.filein = NULL,
-		.fileout = NULL,
+		.in_arg = NULL,
+		.out_arg = NULL,
 	};
 
 	return (&stat);

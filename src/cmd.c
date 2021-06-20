@@ -1,4 +1,5 @@
-#include "lib.h"
+#include "libft/cstring.h"
+
 #include "pipex.h"
 
 t_argv	*command_parse(char *arg)

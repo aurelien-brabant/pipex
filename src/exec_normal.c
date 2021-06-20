@@ -12,21 +12,21 @@ static int	get_redir_fd(int *fd, int index, int pipeline_length)
 {
 	if (index == 0)
 	{
-		*fd = open(stat_get()->filein, O_RDONLY);
+		*fd = open(stat_get()->in_arg, O_RDONLY);
 		if (*fd == -1)
 		{
 			dprintf(STDERR_FILENO, "pipex: %s: %s\n", 
-					stat_get()->filein, strerror(errno));
+					stat_get()->in_arg, strerror(errno));
 			return (1);
 		}
 	}
 	else if (index == pipeline_length - 1)
 	{
-		*fd = open(stat_get()->fileout, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		*fd = open(stat_get()->out_arg, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (*fd == -1)
 		{
 			dprintf(STDERR_FILENO, "pipex: %s: %s\n",
-					stat_get()->fileout, strerror(errno));
+					stat_get()->out_arg, strerror(errno));
 			return (1);
 		}
 	}

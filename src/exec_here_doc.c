@@ -18,15 +18,15 @@ void	exec_here_doc(t_pipeline *pipeline, char *cmd_path, int *pipefd,
 	if (index == 0)
 	{
 		pipe(here_doc_pipefd);
-		write_until_delim(here_doc_pipefd, stat_get()->filein);
+		write_until_delim(here_doc_pipefd, stat_get()->in_arg);
 	}
 	else if (index == pipeline->length - 1)
 	{
-		fd = open(stat_get()->fileout, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		fd = open(stat_get()->out_arg, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (fd == -1)
 		{
 			dprintf(STDERR_FILENO, "pipex: %s: %s\n",
-					stat_get()->fileout, strerror(errno));
+					stat_get()->out_arg, strerror(errno));
 			return ;
 		}
 	}

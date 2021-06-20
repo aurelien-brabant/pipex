@@ -1,3 +1,4 @@
 /pipex
 .cache
 *.o
+/libft
