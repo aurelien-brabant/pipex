@@ -1,0 +1,4 @@
+Hello world$
+This is my implementation of the here_doc feature$
+my_delim will not work because the entire line is not the delimiter$
+The line below will make it stop tho$
