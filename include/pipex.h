@@ -55,9 +55,8 @@ t_argv	*command_parse(char *arg);
 
 /* PARSE COMMAND LINE */
 
+void	execute_normal(t_argv *cmd, int *pipefd, int index, int length);
 
-void	exec_normal(t_pipeline *pipeline, char *cmd_path, int *pipefd,
-		int index);
 void	exec_here_doc(t_pipeline *pipeline, char *cmd_path, int *pipefd,
 			int index);
 

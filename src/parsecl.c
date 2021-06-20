@@ -19,7 +19,7 @@ t_vector	parsecl(int argc, char **argv)
 	t_vector	pipeline;
 	size_t		i;
 
-	i = 0;
+	i = 1;
 	if (argc < 5)
 	{
 		ft_dprintf(STDERR_FILENO, "Usage: pipex [here_doc] <in_arg> "
