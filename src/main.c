@@ -9,9 +9,6 @@
 #include "pipex.h"
 #include "lib.h"
 
-
-
-
 void	execute_command(t_pipeline *pipeline, int *pipefd, int index, int length)
 {
 	t_argv	*paths;
