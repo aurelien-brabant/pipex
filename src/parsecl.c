@@ -14,7 +14,7 @@ static void	pipeline_destroy(t_vector pipeline)
 	ft_vector_destroy(pipeline, (void *)(void *)&argv_destroy);
 }
 
-void	parse_here_doc_mode(int argc, char *arg, size_t *i)
+static void	parse_here_doc_mode(int argc, char *arg, size_t *i)
 {
 	if (ft_strcmp(arg, HERE_DOC_MODE_WORD) == 0)
 	{
@@ -37,8 +37,7 @@ t_vector	parsecl(int argc, char **argv)
 	i = 1;
 	if (argc < 5)
 	{
-		ft_dprintf(STDERR_FILENO, "Usage: pipex [here_doc] <in_arg> "
-			"<cmd1> <cmd2> [...] <cmdn> <out_arg>\n");
+		ft_dprintf(STDERR_FILENO, PIPEX_USAGE);
 		pipex_exit(1);
 	}
 	pipeline = ft_gc_add(stat_get()->gc, assert_ptr(ft_vector_new(10)),

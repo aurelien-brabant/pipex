@@ -7,6 +7,8 @@
 # define HERE_DOC_MODE_WORD "here_doc"
 # define HERE_DOC_BUFFER_SIZE 10000
 
+# define PIPEX_USAGE "pipex [here_doc] <in_arg> <cmd> <cmd2> ..." "<cn> <out>\n"
+
 enum e_mode {
 	MODE_NORMAL,
 	MODE_HERE_DOC,
