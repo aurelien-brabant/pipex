@@ -1,5 +1,5 @@
 CC				:= clang
-CFLAGS			:= -Iinclude -g
+CFLAGS			:= -Iinclude -Ilibft/include -g
 LD				:= $(CC)
 LD_FLAGS		:= -Llibft -lft
 
