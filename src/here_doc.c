@@ -25,7 +25,7 @@ static int	get_line(char *line)
 		if (i + 1 >= HERE_DOC_BUFFER_SIZE)
 		{
 			ft_dprintf(STDERR_FILENO, "here_doc buffer size exceeded (%lld)\n",
-					HERE_DOC_BUFFER_SIZE);
+				HERE_DOC_BUFFER_SIZE);
 			line[i] = '\0';
 			return (-1);
 		}
@@ -53,8 +53,6 @@ void	write_until_delim(int pipefd[2], const char *delim)
 	}
 	close(pipefd[1]);
 	if (ret == 0)
-	{
-		dprintf(STDERR_FILENO, "\npipex: warning: here-document at line %ld" 
-				" delimited by end-of-file (wanted '%s')\n", lc, delim);
-	}
+		dprintf(STDERR_FILENO, "\npipex: warning: here-document at line %ld"
+			" delimited by end-of-file (wanted '%s')\n", lc, delim);
 }

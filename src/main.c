@@ -17,7 +17,7 @@ static void	execute(t_argv *cmd, int pipefd[2], int index, int length)
 	if (stat_get()->mode == MODE_NORMAL)
 		execute_normal(cmd, pipefd, index, length);
 	else
-		execute_here_doc(cmd, pipefd, index, length);	
+		execute_here_doc(cmd, pipefd, index, length);
 }
 
 static void	execute_from_path(t_argv *cmd, int *pipefd, int index, int length)
@@ -26,7 +26,7 @@ static void	execute_from_path(t_argv *cmd, int *pipefd, int index, int length)
 	char	*cmd_path;
 	int		pid;
 	size_t	i;
-	
+
 	i = 0;
 	paths = stat_get()->paths;
 	while (i < paths->length)
@@ -61,7 +61,7 @@ static void	execute_pipeline(t_vector pipeline, int *pipefd)
 			execute(cmd, pipefd + (i * 2), i, ft_vector_length(pipeline));
 		else
 			execute_from_path(cmd, pipefd + (i * 2), i,
-					ft_vector_length(pipeline));
+				ft_vector_length(pipeline));
 		close_pipe(cur_pipefd, i, ft_vector_length(pipeline));
 		++i;
 	}

@@ -3,6 +3,7 @@
 # include <stddef.h>
 # include "libft/gc.h"
 # include "libft/vector.h"
+
 # define HERE_DOC_MODE_WORD "here_doc"
 # define HERE_DOC_BUFFER_SIZE 10000
 
@@ -28,22 +29,12 @@ typedef struct s_stat
 	char		*out_arg;
 }	t_stat;
 
-typedef struct	s_pipeline
-{
-	size_t	cap;
-	size_t	length;
-	t_argv	**cmds;
-}	t_pipeline;
-
-
 t_vector	parsecl(int argc, char **argv);
 
 t_argv		*argv_new(size_t size);
-void		argv_remove(t_argv *argv, size_t index);
 void		argv_append(t_argv *argv, char *arg);
 void		argv_destroy(t_argv *argv);
 
-void		pipex_exit(int exit_code);
 void		close_pipe(int pipefd[2], int index, int length);
 
 void		write_until_delim(int pipefd[2], const char *delim);
@@ -54,11 +45,10 @@ t_argv		*get_paths(char **env);
 char		*get_cmd_path(const char *cmd, const char *path);
 t_argv		*command_parse(char *arg);
 
+void		execute_normal(t_argv *cmd, int *pipefd, int index, int length);
+void		execute_here_doc(t_argv *cmd, int *pipefd, int index, int length);
 
-/* PARSE COMMAND LINE */
+void		*assert_ptr(void *p);
+void		pipex_exit(int exit_code);
 
-void	execute_normal(t_argv *cmd, int *pipefd, int index, int length);
-void	execute_here_doc(t_argv *cmd, int *pipefd, int index, int length);
-
-void	*assert_ptr(void *p);
 #endif

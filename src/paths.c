@@ -7,7 +7,7 @@
 
 #include "pipex.h"
 
-static void		populate_paths(t_argv *paths, char *path_value)
+static void	populate_paths(t_argv *paths, char *path_value)
 {
 	char	*token;
 
