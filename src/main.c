@@ -20,7 +20,6 @@ static void	execute_from_path(t_argv *cmd, int *pipefd, int index, int length)
 	size_t	i;
 	
 	i = 0;
-	pipe(pipefd);
 	paths = stat_get()->paths;
 	while (i < paths->length)
 	{
@@ -49,15 +48,26 @@ static void	execute_pipeline(t_vector pipeline, int *pipefd)
 	while (i < ft_vector_length(pipeline))
 	{
 		cur_pipefd = pipefd + (i * 2);
+		pipe(cur_pipefd);
 		cmd = ft_vector_get(pipeline, i);
 		if (access(cmd->args[0], X_OK) == 0)
 			execute_normal(cmd, pipefd + (i * 2), i, ft_vector_length(pipeline));
 		else
 			execute_from_path(cmd, pipefd + (i * 2), i,
 					ft_vector_length(pipeline));
-		close(cur_pipefd[1]);
+		close_pipe(cur_pipefd, i, ft_vector_length(pipeline));
 		++i;
 	}
+}
+
+void	close_pipe(int pipefd[2], int index, int length)
+{
+	if (index != 0 && pipefd[-2] != -1)
+	{
+		close(pipefd[-2]);
+		pipefd[-2] = -1;
+	}
+	close(pipefd[1]);
 }
 
 int	main(int argc, char **argv, char *envp[])
@@ -65,6 +75,7 @@ int	main(int argc, char **argv, char *envp[])
 	t_gc		gc;
 	t_vector	pipeline;
 	int			*pipefd;
+	size_t		i;
 
 	gc = ft_gc_new();
 	if (gc == NULL)
@@ -75,6 +86,8 @@ int	main(int argc, char **argv, char *envp[])
 	stat_get()->paths = get_paths(envp);
 	pipefd = ft_gc_add(stat_get()->gc, assert_ptr(
 				malloc(sizeof (int) * ft_vector_length(pipeline) * 2)), &free);
+	i = 0;
 	execute_pipeline(pipeline, pipefd);
+	pipex_exit(0);
 	return (0);
 }

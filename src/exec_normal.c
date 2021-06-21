@@ -22,7 +22,7 @@ static int	open_fds(int fd[2], int index, int length)
 		fd[0] = open(in, O_RDONLY);
 		if (fd[0] == -1)
 		{
-			ft_dprintf(STDERR_FILENO, "pipex: %s: %s", in, strerror(errno));
+			ft_dprintf(STDERR_FILENO, "pipex: %s: %s\n", in, strerror(errno));
 			return (1);
 		}
 	}
@@ -38,11 +38,11 @@ static int	open_fds(int fd[2], int index, int length)
 	return (0);
 }
 
-static void	close_fds(int fd[2], int index, int length)
+static void	close_fds(int fd[2], int *pipefd, int index, int length)
 {
-	if (index == 0)
+	if (index == 0 && fd[0] != -1)
 		close(fd[0]);
-	else if (index == length - 1)
+	if (index == length - 1 && fd[1] != -1)
 		close(fd[1]);
 }
 
@@ -52,7 +52,10 @@ void	execute_normal(t_argv *cmd, int *pipefd, int index, int length)
 	int	fd[2];
 
 	if (open_fds(fd, index, length) != 0)
+	{
+		close_fds(fd, pipefd, index, length);
 		return ;
+	}
 	pipe(pipefd);
 	pid = fork();
 	if (pid == 0)
@@ -68,6 +71,5 @@ void	execute_normal(t_argv *cmd, int *pipefd, int index, int length)
 		execve(cmd->args[0], cmd->args, stat_get()->envp);
 	}
 	waitpid(pid, NULL, 0);
-	close(pipefd[1]);
-	close_fds(fd, index, length);
+	close_fds(fd, pipefd, index, length);
 }

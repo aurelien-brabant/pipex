@@ -43,6 +43,7 @@ void		argv_append(t_argv *argv, char *arg);
 void		argv_destroy(t_argv *argv);
 
 void		pipex_exit(int exit_code);
+void	close_pipe(int pipefd[2], int index, int length);
 
 void		write_until_delim(int pipefd[2], const char *delim);
 
