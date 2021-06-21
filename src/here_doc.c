@@ -3,6 +3,10 @@
 #include <unistd.h>
 #include <string.h>
 
+#include "libft/io.h"
+
+#include "pipex.h"
+
 /*
 ** Handling of the here document feature (<<)
 */
@@ -18,6 +22,13 @@ static int	get_line(char *line)
 	ret = read(STDIN_FILENO, &buf, 1);
 	while (ret > 0 && buf != '\n')
 	{
+		if (i + 1 >= HERE_DOC_BUFFER_SIZE)
+		{
+			ft_dprintf(STDERR_FILENO, "here_doc buffer size exceeded (%lld)\n",
+					HERE_DOC_BUFFER_SIZE);
+			line[i] = '\0';
+			return (-1);
+		}
 		line[i++] = buf;
 		ret = read(STDIN_FILENO, &buf, 1);
 	}
@@ -27,7 +38,7 @@ static int	get_line(char *line)
 
 void	write_until_delim(int pipefd[2], const char *delim)
 {
-	char	line[10000];
+	char	line[HERE_DOC_BUFFER_SIZE];
 	size_t	lc;
 	int		ret;
 

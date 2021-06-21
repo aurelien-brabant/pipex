@@ -36,6 +36,7 @@ t_vector	parsecl(int argc, char **argv)
 					"5 arguments, got %d\n", argc);
 			pipex_exit(1);
 		}
+		stat_get()->mode = MODE_HERE_DOC;
 		++i;
 	}
 	stat_get()->in_arg = argv[i++];

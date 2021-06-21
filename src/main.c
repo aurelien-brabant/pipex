@@ -12,6 +12,14 @@
 
 #include "pipex.h"
 
+static void	execute(t_argv *cmd, int pipefd[2], int index, int length)
+{
+	if (stat_get()->mode == MODE_NORMAL)
+		execute_normal(cmd, pipefd, index, length);
+	else
+		execute_here_doc(cmd, pipefd, index, length);	
+}
+
 static void	execute_from_path(t_argv *cmd, int *pipefd, int index, int length)
 {
 	t_argv	*paths;
@@ -27,8 +35,7 @@ static void	execute_from_path(t_argv *cmd, int *pipefd, int index, int length)
 		if (access(cmd_path, X_OK) == 0)
 		{
 			cmd->args[0] = cmd_path;
-			if (stat_get()->mode == MODE_NORMAL)
-				execute_normal(cmd, pipefd, index, length);
+			execute(cmd, pipefd, index, length);
 			free(cmd_path);
 			return ;
 		}
@@ -51,7 +58,7 @@ static void	execute_pipeline(t_vector pipeline, int *pipefd)
 		pipe(cur_pipefd);
 		cmd = ft_vector_get(pipeline, i);
 		if (access(cmd->args[0], X_OK) == 0)
-			execute_normal(cmd, pipefd + (i * 2), i, ft_vector_length(pipeline));
+			execute(cmd, pipefd + (i * 2), i, ft_vector_length(pipeline));
 		else
 			execute_from_path(cmd, pipefd + (i * 2), i,
 					ft_vector_length(pipeline));

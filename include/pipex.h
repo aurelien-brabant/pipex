@@ -4,6 +4,7 @@
 # include "libft/gc.h"
 # include "libft/vector.h"
 # define HERE_DOC_MODE_WORD "here_doc"
+# define HERE_DOC_BUFFER_SIZE 10000
 
 enum e_mode {
 	MODE_NORMAL,
@@ -43,24 +44,21 @@ void		argv_append(t_argv *argv, char *arg);
 void		argv_destroy(t_argv *argv);
 
 void		pipex_exit(int exit_code);
-void	close_pipe(int pipefd[2], int index, int length);
+void		close_pipe(int pipefd[2], int index, int length);
 
 void		write_until_delim(int pipefd[2], const char *delim);
 
 t_stat		*stat_get(void);
 
-t_argv	*get_paths(char **env);
-char	*get_cmd_path(const char *cmd, const char *path);
-t_argv	*command_parse(char *arg);
+t_argv		*get_paths(char **env);
+char		*get_cmd_path(const char *cmd, const char *path);
+t_argv		*command_parse(char *arg);
 
 
 /* PARSE COMMAND LINE */
 
 void	execute_normal(t_argv *cmd, int *pipefd, int index, int length);
-
-void	exec_here_doc(t_pipeline *pipeline, char *cmd_path, int *pipefd,
-			int index);
-
+void	execute_here_doc(t_argv *cmd, int *pipefd, int index, int length);
 
 void	*assert_ptr(void *p);
 #endif
