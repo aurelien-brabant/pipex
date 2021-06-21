@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "libft/io.h"
+#include "libft/cstring.h"
 
 #include "pipex.h"
 
@@ -44,9 +45,9 @@ void	write_until_delim(int pipefd[2], const char *delim)
 
 	lc = 1;
 	ret = get_line(line);
-	while (ret > 0 && strcmp(line, delim) != 0)
+	while (ret > 0 && ft_strcmp(line, delim) != 0)
 	{
-		write(pipefd[1], line, strlen(line));
+		write(pipefd[1], line, ft_strlen(line));
 		write(pipefd[1], "\n", 1);
 		++lc;
 		ret = get_line(line);

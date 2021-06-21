@@ -68,8 +68,8 @@ void	execute_normal(t_argv *cmd, int *pipefd, int index, int length)
 			dup2(fd[1], STDOUT_FILENO);
 		else
 			dup2(pipefd[1], STDOUT_FILENO);
-		execve(cmd->args[0], cmd->args, stat_get()->envp);
+		exit(execve(cmd->args[0], cmd->args, stat_get()->envp));
 	}
-	waitpid(pid, NULL, 0);
+	//waitpid(pid, NULL, 0);
 	close_fds(fd, pipefd, index, length);
 }

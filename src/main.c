@@ -95,6 +95,8 @@ int	main(int argc, char **argv, char *envp[])
 				malloc(sizeof (int) * ft_vector_length(pipeline) * 2)), &free);
 	i = 0;
 	execute_pipeline(pipeline, pipefd);
+	while (wait(NULL) > 0)
+		;
 	pipex_exit(0);
 	return (0);
 }
