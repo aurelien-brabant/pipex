@@ -37,7 +37,7 @@ static int	get_line(char *line)
 	return (ret);
 }
 
-void	write_until_delim(int pipefd[2], const char *delim)
+void	here_doc(int pipefd[2], const char *delim)
 {
 	char	line[HERE_DOC_BUFFER_SIZE];
 	size_t	lc;

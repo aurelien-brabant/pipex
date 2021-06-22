@@ -6,6 +6,12 @@
 
 #include "pipex.h"
 
+/*
+** Returns the pointer passed as an argument if it is not
+** NULL. Otherwise, the dynamically allocated memory is freed and the program
+** is exited.
+*/
+
 void	*assert_ptr(void *p)
 {
 	if (p == NULL)
@@ -15,6 +21,10 @@ void	*assert_ptr(void *p)
 	}
 	return (p);
 }
+
+/*
+** Exit pipex, freeing all the dynamically allocated resources.
+*/
 
 void	pipex_exit(int exit_code)
 {

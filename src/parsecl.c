@@ -21,13 +21,18 @@ static void	parse_here_doc_mode(int argc, char *arg, size_t *i)
 		if (argc < 6)
 		{
 			ft_dprintf(STDERR_FILENO, "here_doc mode requires at least"
-				"5 arguments, got %d\n", argc);
+				" 5 arguments, got %d\n", argc);
 			pipex_exit(1);
 		}
 		stat_get()->mode = MODE_HERE_DOC;
 		(*i)++;
 	}
 }
+
+/*
+** Parse the command line
+** Generate a vector of commands that represents an actual pipeline.
+*/
 
 t_vector	parsecl(int argc, char **argv)
 {

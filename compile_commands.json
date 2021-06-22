@@ -4,58 +4,105 @@
             "clang",
             "-c",
             "-Iinclude",
+            "-Ilibft/include",
             "-g",
             "-o",
-            "lib/ft_strtok.o",
-            "lib/ft_strtok.c"
+            "src/argv.o",
+            "src/argv.c"
         ],
         "directory": "/home/abrabant/Prog/42/pipex",
-        "file": "lib/ft_strtok.c"
+        "file": "src/argv.c"
     },
     {
         "arguments": [
             "clang",
             "-c",
             "-Iinclude",
+            "-Ilibft/include",
             "-g",
             "-o",
-            "lib/ft_strdup.o",
-            "lib/ft_strdup.c"
+            "src/cmd.o",
+            "src/cmd.c"
         ],
         "directory": "/home/abrabant/Prog/42/pipex",
-        "file": "lib/ft_strdup.c"
+        "file": "src/cmd.c"
     },
     {
         "arguments": [
             "clang",
             "-c",
             "-Iinclude",
+            "-Ilibft/include",
             "-g",
             "-o",
-            "src/main.o",
-            "src/main.c"
+            "src/stat.o",
+            "src/stat.c"
         ],
         "directory": "/home/abrabant/Prog/42/pipex",
-        "file": "src/main.c"
+        "file": "src/stat.c"
     },
     {
         "arguments": [
             "clang",
             "-c",
             "-Iinclude",
+            "-Ilibft/include",
             "-g",
             "-o",
-            "lib/ft_strlen.o",
-            "lib/ft_strlen.c"
+            "src/error.o",
+            "src/error.c"
         ],
         "directory": "/home/abrabant/Prog/42/pipex",
-        "file": "lib/ft_strlen.c"
+        "file": "src/error.c"
     },
     {
         "arguments": [
             "clang",
             "-c",
             "-Iinclude",
+            "-Ilibft/include",
+            "-g",
+            "-o",
+            "src/exec_here_doc.o",
+            "src/exec_here_doc.c"
+        ],
+        "directory": "/home/abrabant/Prog/42/pipex",
+        "file": "src/exec_here_doc.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-Iinclude",
+            "-Ilibft/include",
+            "-g",
+            "-o",
+            "src/here_doc.o",
+            "src/here_doc.c"
+        ],
+        "directory": "/home/abrabant/Prog/42/pipex",
+        "file": "src/here_doc.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-Iinclude",
+            "-Ilibft/include",
+            "-g",
+            "-o",
+            "src/parsecl.o",
+            "src/parsecl.c"
+        ],
+        "directory": "/home/abrabant/Prog/42/pipex",
+        "file": "src/parsecl.c"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-Iinclude",
+            "-Ilibft/include",
             "-g",
             "-o",
             "src/paths.o",
@@ -69,25 +116,27 @@
             "clang",
             "-c",
             "-Iinclude",
+            "-Ilibft/include",
             "-g",
             "-o",
-            "lib/ft_strncmp.o",
-            "lib/ft_strncmp.c"
+            "src/main.o",
+            "src/main.c"
         ],
         "directory": "/home/abrabant/Prog/42/pipex",
-        "file": "lib/ft_strncmp.c"
+        "file": "src/main.c"
     },
     {
         "arguments": [
             "clang",
             "-c",
             "-Iinclude",
+            "-Ilibft/include",
             "-g",
             "-o",
-            "lib/ft_strlcpy.o",
-            "lib/ft_strlcpy.c"
+            "src/exec_normal.o",
+            "src/exec_normal.c"
         ],
         "directory": "/home/abrabant/Prog/42/pipex",
-        "file": "lib/ft_strlcpy.c"
+        "file": "src/exec_normal.c"
     }
 ]

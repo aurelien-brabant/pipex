@@ -65,6 +65,7 @@ static void	execute_pipeline(t_vector pipeline, int *pipefd)
 		close_pipe(cur_pipefd, i, ft_vector_length(pipeline));
 		++i;
 	}
+	close(cur_pipefd[0]);
 }
 
 void	close_pipe(int pipefd[2], int index, int length)

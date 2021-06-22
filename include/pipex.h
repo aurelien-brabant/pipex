@@ -7,7 +7,7 @@
 # define HERE_DOC_MODE_WORD "here_doc"
 # define HERE_DOC_BUFFER_SIZE 10000
 
-# define PIPEX_USAGE "pipex [here_doc] <in_arg> <cmd> <cmd2> ..." "<cn> <out>\n"
+# define PIPEX_USAGE "pipex [here_doc] <in_arg> <cmd> <cmd2> ... <cmdn> <out>\n"
 
 enum e_mode {
 	MODE_NORMAL,
@@ -39,7 +39,7 @@ void		argv_destroy(t_argv *argv);
 
 void		close_pipe(int pipefd[2], int index, int length);
 
-void		write_until_delim(int pipefd[2], const char *delim);
+void		here_doc(int pipefd[2], const char *delim);
 
 t_stat		*stat_get(void);
 

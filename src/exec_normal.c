@@ -56,7 +56,6 @@ void	execute_normal(t_argv *cmd, int *pipefd, int index, int length)
 		close_fds(fd, pipefd, index, length);
 		return ;
 	}
-	pipe(pipefd);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -70,6 +69,5 @@ void	execute_normal(t_argv *cmd, int *pipefd, int index, int length)
 			dup2(pipefd[1], STDOUT_FILENO);
 		exit(execve(cmd->args[0], cmd->args, stat_get()->envp));
 	}
-	//waitpid(pid, NULL, 0);
 	close_fds(fd, pipefd, index, length);
 }

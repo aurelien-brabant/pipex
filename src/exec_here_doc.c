@@ -18,7 +18,7 @@ static int	open_fds(int *fd, int here_doc_pipefd[2], int index, int length)
 	if (index == 0)
 	{
 		pipe(here_doc_pipefd);
-		write_until_delim(here_doc_pipefd, stat_get()->in_arg);
+		here_doc(here_doc_pipefd, stat_get()->in_arg);
 	}
 	if (index == length - 1)
 	{
