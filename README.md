@@ -26,3 +26,15 @@ Between these two special arguments, an unlimited list of commands can be
 provided. Each command's output will be used as input by the next command,
 using the pipe mechanism. You can think of it like if every command was
 separated from the next by a `|` (pipe) symbol.
+
+Given that syntax, executing something like `pipex filein cat 'cat -e' fileout`
+should be equivalent to the shell command `< filein cat | cat -e > fileout`.
+
+### Here document mode
+
+The here document mode can be enabled by providing the exact `here_doc` string
+as the first argument. In this mode, the standard input redirection (`<`) is replaced by
+the here document feature (`<<`) while the output redirection now appends the new content
+to the file if it already exists (`>>`).
+
+Taking the above example command, it would be equivalent to: `<< DELIM cat | cat -e >> fileout`.
