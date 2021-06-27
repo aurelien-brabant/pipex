@@ -7,14 +7,14 @@
 
 #include "pipex.h"
 
-static void	populate_paths(t_argv *paths, char *path_value)
+static void	populate_paths(t_vector paths, char *path_value)
 {
 	char	*token;
 
 	token = ft_strtok(path_value, ":");
 	while (token != NULL)
 	{
-		argv_append(paths, token);
+		ft_vector_append(paths, token);
 		token = ft_strtok(NULL, ":");
 	}
 }
@@ -38,13 +38,14 @@ char	*get_cmd_path(const char *cmd, const char *path)
 	return (cmd_path);
 }
 
-t_argv	*get_paths(char **env)
+t_vector	get_paths(char **env)
 {
-	t_argv	*paths;
-	char	*path_value;
-	char	*token;
+	t_vector	paths;
+	char		*path_value;
+	char		*token;
 
-	paths = ft_gc_add(stat_get()->gc, assert_ptr(argv_new(10)), &argv_destroy);
+	paths = ft_gc_add(stat_get()->gc, assert_ptr(ft_vector_new(10)),
+			(void *)(void *)&ft_vector_destroy);
 	path_value = NULL;
 	while (*env)
 	{

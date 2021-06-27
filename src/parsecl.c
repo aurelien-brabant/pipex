@@ -9,9 +9,14 @@
 
 #include "pipex.h"
 
+static void	command_destroy(t_vector cmd)
+{
+	ft_vector_destroy(cmd, NULL);
+}
+
 static void	pipeline_destroy(t_vector pipeline)
 {
-	ft_vector_destroy(pipeline, (void *)(void *)&argv_destroy);
+	ft_vector_destroy(pipeline, &command_destroy);
 }
 
 static void	parse_here_doc_mode(int argc, char *arg, size_t *i)

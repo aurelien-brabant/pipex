@@ -8,9 +8,6 @@
 
 #include "pipex.h"
 
-/*
-** Handling of the here document feature (<<)
-*/
 
 static int	get_line(char *line)
 {
@@ -37,23 +34,27 @@ static int	get_line(char *line)
 	return (ret);
 }
 
-void	here_doc(int pipefd[2], const char *delim)
+int	here_doc(const char *delim)
 {
 	char	line[HERE_DOC_BUFFER_SIZE];
 	size_t	lc;
 	int		ret;
+	int		fd[2];
 
+	fd[1] = open(HERE_DOC_FILE, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	fd[0] = open(HERE_DOC_FILE, O_RDONLY);
 	lc = 1;
 	ret = get_line(line);
 	while (ret > 0 && ft_strcmp(line, delim) != 0)
 	{
-		write(pipefd[1], line, ft_strlen(line));
-		write(pipefd[1], "\n", 1);
+		write(fd[1], line, ft_strlen(line));
+		write(fd[1], "\n", 1);
 		++lc;
 		ret = get_line(line);
 	}
-	close(pipefd[1]);
+	close(fd[1]);
 	if (ret == 0)
 		dprintf(STDERR_FILENO, "\npipex: warning: here-document at line %ld"
 			" delimited by end-of-file (wanted '%s')\n", lc, delim);
+	return (fd[0]);
 }
