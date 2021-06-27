@@ -9,16 +9,6 @@
 
 #include "pipex.h"
 
-static void	command_destroy(t_vector cmd)
-{
-	ft_vector_destroy(cmd, NULL);
-}
-
-static void	pipeline_destroy(t_vector pipeline)
-{
-	ft_vector_destroy(pipeline, &command_destroy);
-}
-
 static void	parse_here_doc_mode(int argc, char *arg, size_t *i)
 {
 	if (ft_strcmp(arg, HERE_DOC_MODE_WORD) == 0)
@@ -26,7 +16,7 @@ static void	parse_here_doc_mode(int argc, char *arg, size_t *i)
 		if (argc < 6)
 		{
 			ft_dprintf(STDERR_FILENO, "here_doc mode requires at least"
-				" 5 arguments, got %d\n", argc);
+				" 4 arguments, got %d\n", argc - 2);
 			pipex_exit(1);
 		}
 		stat_get()->mode = MODE_HERE_DOC;

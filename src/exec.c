@@ -16,8 +16,8 @@ static void	execute(t_vector cmd)
 			stat_get()->envp) == -1)
 	{
 		ft_dprintf(STDERR_FILENO, "pipex: %s: %s\n", ft_vector_get(cmd, 0),
-				strerror(errno));
-		exit(127);
+			strerror(errno));
+		pipex_exit(126);
 	}
 }
 
@@ -41,11 +41,11 @@ static void	execute_from_path(t_vector cmd)
 		++i;
 	}
 	ft_dprintf(STDERR_FILENO, "pipex: %s: command not found\n",
-			(char *)ft_vector_get(cmd, 0));
-	exit(127);
+		(char *)ft_vector_get(cmd, 0));
+	pipex_exit(127);
 }
 
-void	execute_command(t_vector cmd, int pipefd[2], int index, int length)
+static int	execute_command(t_vector cmd, int pipefd[2], int index, int length)
 {
 	int	pid;
 	int	ttyfd[2];
@@ -58,40 +58,57 @@ void	execute_command(t_vector cmd, int pipefd[2], int index, int length)
 	pid = fork();
 	if (pid == 0)
 	{
-		close(ttyfd[0]);
-		close(ttyfd[1]);
+		close_two(ttyfd);
 		close_pipes(pipefd - (index * 2), index + 1);
 		if (redir_ret != 0)
-			exit(2);
+			pipex_exit(2);
 		if (access(ft_vector_get(cmd, 0), X_OK) == 0)
 			execute(cmd);
 		else
 			execute_from_path(cmd);
+		ft_gc_destroy(stat_get()->gc);
 	}
 	dup2(ttyfd[0], STDIN_FILENO);
 	dup2(ttyfd[1], STDOUT_FILENO);
-	close(ttyfd[0]);
-	close(ttyfd[1]);
+	close_two(ttyfd);
+	return (pid);
 }
 
-static void	wait_for_children(int *pipefd, int length)
+/*
+** Wait for child processes to terminate.
+**
+** The exit status of the last command of the pipeline is returned.
+*/
+
+static int	wait_for_children(int *pipefd, pid_t last_pid, int length)
 {
 	size_t	i;
+	int		wstatus;
+	int		last_status;
+	pid_t	pid;
 
 	i = 0;
-	while (wait(NULL) > 0)
+	last_status = 0;
+	while (1)
 	{
+		pid = wait(&wstatus);
+		if (pid <= 0)
+			break ;
 		if (i++ == 0)
 			close_pipes(pipefd, length);
+		if (pid == last_pid)
+			last_status = WEXITSTATUS(wstatus);
 	}
+	return (last_status);
 }
 
-void	execute_pipeline(t_vector pipeline)
+int	execute_pipeline(t_vector pipeline)
 {
 	size_t		i;
 	t_vector	cmd;
 	int			*pipefd;
 	size_t		length;
+	pid_t		last_pid;
 
 	length = ft_vector_length(pipeline);
 	pipefd = ft_gc_add(stat_get()->gc, assert_ptr(malloc(sizeof (int)
@@ -100,8 +117,9 @@ void	execute_pipeline(t_vector pipeline)
 	while (i < ft_vector_length(pipeline))
 	{
 		cmd = ft_vector_get(pipeline, i);
-		execute_command(cmd, pipefd + (i * 2), i, ft_vector_length(pipeline));
+		last_pid = execute_command(cmd, pipefd + (i * 2), i,
+				ft_vector_length(pipeline));
 		++i;
 	}
-	wait_for_children(pipefd, length);
+	return (wait_for_children(pipefd, last_pid, length));
 }

@@ -8,7 +8,6 @@
 
 #include "pipex.h"
 
-
 static int	get_line(char *line)
 {
 	char	buf;

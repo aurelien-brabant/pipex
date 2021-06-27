@@ -21,6 +21,5 @@ int	main(int argc, char **argv, char *envp[])
 	stat_get()->envp = envp;
 	pipeline = parsecl(argc, argv);
 	stat_get()->paths = get_paths(envp);
-	execute_pipeline(pipeline);
-	pipex_exit(0);
+	pipex_exit(execute_pipeline(pipeline));
 }

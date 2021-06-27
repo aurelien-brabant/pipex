@@ -27,21 +27,22 @@ typedef struct s_stat
 
 t_vector	parsecl(int argc, char **argv);
 
-
-void		close_pipes(int *pipefd, int length);
-
-int			here_doc(const char *delim);
-
 t_stat		*stat_get(void);
 
 t_vector	get_paths(char **env);
 char		*get_cmd_path(const char *cmd, const char *path);
+
+int			execute_pipeline(t_vector pipeline);
+
+int			make_redirections(int index, int length, int ttyfd[2],
+				int pipefd[2]);
+int			here_doc(const char *delim);
+
+void		close_pipes(int *pipefd, int length);
+void		close_two(int fd[2]);
 t_vector	command_parse(char *arg);
-
-void		execute_pipeline(t_vector pipeline);
-void		execute_command(t_vector cmd, int pipefd[2], int index, int length);
-
-int			make_redirections(int index, int length, int ttyfd[2],int pipefd[2]);
+void		command_destroy(t_vector cmd);
+void		pipeline_destroy(t_vector pipeline);
 
 void		*assert_ptr(void *p);
 void		pipex_exit(int exit_code);
